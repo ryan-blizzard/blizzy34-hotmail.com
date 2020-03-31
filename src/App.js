@@ -1,26 +1,95 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React from "react";
+import "./App.css";
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+class App extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      data: [],
+      user: "",
+      repo: "",
+      title: "",
+      state: ""
+    };
+    this.handleChange = this.handleChange.bind(this);
+    this.handleSubmit = this.handleSubmit.bind(this);
+  }
+
+  handleChange(event) {
+    console.log(event.target.value);
+    console.log(event.target.name);
+    this.setState({ [event.target.name]: event.target.value });
+    console.log(this.state);
+  }
+  handleSubmit(event) {
+    console.log(this.state);
+    fetch(
+      `https://api.github.com/repos/${this.state.user}/${this.state.repo}/issues?state=${this.state.state}&title=${this.state.title}`
+    )
+      .then(response => response.json())
+      .then(data => {
+        console.log(data);
+        this.setState({ data });
+      });
+  }
+  render() {
+    return (
+      <div className="App">
+        <div className="inputContainer">
+          user
+          <input
+            type="text"
+            name="user"
+            value={this.state.value}
+            onChange={this.handleChange}
+          />
+          repo
+          <input
+            type="text"
+            name="repo"
+            value={this.state.value}
+            onChange={this.handleChange}
+          />
+          state change to select
+          {/* <input
+            type="text"
+            name="state"
+            value={this.state.value}
+            onChange={this.handleChange}
+          /> */}
+          <select name="state" onChange={this.handleChange}>
+            <option value="All">All</option>
+            <option value="Open">Open</option>
+            <option value="Close">Close</option>
+          </select>
+          title
+          <input
+            type="text"
+            name="title"
+            value={this.state.value}
+            onChange={this.handleChange}
+          />
+          submit
+          <input
+            type="submit"
+            name="submit"
+            value="submit"
+            onClick={this.handleSubmit}
+          />
+        </div>
+
+        <div className="resultsContainer">
+          {this.state.data.map((item, index) => (
+            <div key={index}>
+              <p>{item.title}</p>
+              <p>{item.state}</p>
+              <p>{item.user.login}</p>
+            </div>
+          ))}
+        </div>
+      </div>
+    );
+  }
 }
 
 export default App;
