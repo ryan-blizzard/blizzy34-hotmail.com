@@ -51,17 +51,12 @@ class App extends React.Component {
             onChange={this.handleChange}
           />
           state change to select
-          {/* <input
+          <input
             type="text"
             name="state"
             value={this.state.value}
             onChange={this.handleChange}
-          /> */}
-          <select name="state" onChange={this.handleChange}>
-            <option value="All">All</option>
-            <option value="Open">Open</option>
-            <option value="Close">Close</option>
-          </select>
+          />
           title
           <input
             type="text"
@@ -79,13 +74,13 @@ class App extends React.Component {
         </div>
 
         <div className="resultsContainer">
-          {this.state.data.map((item, index) => (
-            <div key={index}>
+        {this.state.data.map((item, index) => (
+          <div key={index}>
               <p>{item.title}</p>
               <p>{item.state}</p>
-              <p>{item.user.login}</p>
-            </div>
-          ))}
+             <p>{item.user.login}</p>
+          </div>
+        ))}
         </div>
       </div>
     );
